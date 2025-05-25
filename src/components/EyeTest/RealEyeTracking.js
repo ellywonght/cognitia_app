@@ -67,6 +67,7 @@ if (window.webgazer) {
   } catch {}
   try {
     window.webgazer.begin();
+    window.webgazer.showPredictionPoints(false);
     window.webgazer.setGazeListener((data, timestamp) => {
       if (gazeProcessingLogicRef.current) {
         gazeProcessingLogicRef.current(data);

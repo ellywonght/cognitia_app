@@ -51,8 +51,6 @@ html, body {
   padding: 15px; 
 }
 
-/* Footer section CSS removed */
-
 /* Status Messages */
 .status {
   padding: 8px;
@@ -267,9 +265,6 @@ html, body {
   background: #27ae60;
 }
 
-/* .home-button class (for footer) removed as footer is removed */
-/* If you have a home button in the header, style it separately or use a generic button style */
-
 .retry-button {
   padding: 10px;
   font-size: 0.9rem;
@@ -400,64 +395,27 @@ html, body {
   width: 100%;
 }
 
-/* Responsive Adjustments */
-@media (max-height: 600px) {
-  .tracking-area {
-    height: 45vh;
-    min-height: 200px;
-    max-height: 300px;
-  }
-  .results-panel {
-    padding: 10px;
-  }
-  .results-panel h3 {
-    font-size: 1.1rem;
-    margin-bottom: 8px;
-  }
-  .result-item {
-    margin: 4px 0;
-    padding: 6px;
-  }
-  .result-label, .result-value {
-    font-size: 0.85rem;
-  }
-  .result-description {
-    font-size: 0.7rem;
-  }
-  .control-button {
-    padding: 8px;
-    font-size: 0.85rem;
-    max-width: 180px;
-  }
+/* WebGazer Camera Video Feed - ADDED */
+/* Shrink and move WebGazer canvas overlays */
+#webgazerVideoFeed,
+#webgazerFaceOverlay,
+#webgazerFaceFeedbackBox,
+#webgazerFaceFeedback {
+  display: none !important;
+/*  position: fixed !important;
+  top: 10px !important;
+  left: 10px !important;
+  width: 120px !important;
+  height: 90px !important;
+  z-index: 9999 !important;
+  border-radius: 8px;
+  object-fit: cover; */
 }
 
-@media (max-width: 600px) {
-  .eye-test-container {
-    padding: 8px;
-  }
-  .header-section h2 {
-    font-size: 1.2rem;
-  }
-  .status {
-    font-size: 0.85rem;
-    padding: 6px;
-  }
-  .tracking-area {
-    height: 45vh; 
-    min-height: 200px; 
-  }
-  .mode-card {
-    padding: 12px;
-  }
-  .mode-card h3 {
-    font-size: 1rem;
-  }
-  .mode-description {
-    font-size: 0.8rem;
-    margin-bottom: 10px;
-  }
-  .mode-button, .control-button, /* .home-button removed from this list */ .exit-button, .retry-button {
-    padding: 8px;
-    font-size: 0.85rem;
-  }
+/* Ensure canvases align with the video size */
+#webgazerFaceOverlay,
+#webgazerFaceFeedbackBox,
+#webgazerFaceFeedback {
+  pointer-events: none;
 }
+
