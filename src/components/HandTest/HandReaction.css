@@ -1,0 +1,495 @@
+/* General container */
+.hand-reaction-container {
+  width: 100%;
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hand-reaction-container h2 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-size: 1.6em;
+}
+
+/* "Show Hand Outline" button container */
+.mode-toggles {
+  margin-bottom: 10px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+/* Combined Test Stats - Single Row */
+.test-stats-single-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto 10px auto;
+  padding: 8px 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 0.95em;
+}
+
+.stat-item {
+  display: inline-flex;
+  align-items: center;
+}
+
+.icon-tick { color: green; font-weight: bold; margin-left: 5px; }
+.icon-cross { color: red; font-weight: bold; margin-left: 5px; }
+
+.visual-aid-button,
+.controls button {
+  margin: 5px; padding: 9px 14px; border: 1px solid #ccc;
+  background-color: #f0f0f0; border-radius: 5px; cursor: pointer;
+  font-size: 0.9em;
+}
+.controls button:disabled { background-color: #e0e0e0; cursor: not-allowed; }
+.visual-aid-button:hover,
+.controls button:not(:disabled):hover { background-color: #e9e9e9; }
+
+.video-container {
+  position: relative;
+  width: 100%;
+  max-width: 640px;
+  aspect-ratio: 640 / 480;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  background-color: #333;
+  margin: 10px auto;
+  max-height: 350px; /* As per your previous version */
+}
+
+.webcam,
+.hand-landmarks-canvas {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+}
+.hand-landmarks-canvas.hidden { display: none; }
+
+/* Target Styles - MODIFIED for arming feedback */
+.target.hand-target {
+  position: absolute;
+  z-index: 10; /* Ensure it's above canvas but below env-message if needed */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* background-color will be set by the emoji character, or you can add one */
+  /* For the emoji itself, the size is controlled by font-size in HandReaction.js style prop */
+  border-radius: 50%; /* If you want a circular background/hitbox appearance */
+  cursor: default;
+  /* --- NEW: Smooth transition for opacity change --- */
+  transition: opacity 0.15s ease-in-out; /* Adjust timing as needed */
+}
+
+.target.hand-target.hidden {
+  display: none;
+}
+
+/* --- NEW: Style for the target when it's in the "arming" state --- */
+.target.hand-target.arming {
+  opacity: 0.4; /* Reduced opacity to indicate it's not yet active */
+  /* Optional: You could also change the emoji color or add a border if desired,
+     but opacity is often the clearest and simplest.
+     e.g., filter: grayscale(100%); (though this might make emoji less clear)
+  */
+}
+
+
+.env-message {
+  position: absolute; bottom: 8px; left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 16px); max-width: 450px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white; padding: 7px 10px;
+  border-radius: 5px; font-size: 0.8em;
+  box-sizing: border-box; z-index: 20; text-align: center;
+}
+.env-message.hidden { display: none; }
+
+.camera-permission {
+  color: red; font-weight: bold; padding: 15px;
+  background-color: #ffebee; border: 1px solid #ffcdd2;
+  border-radius: 5px; margin: 10px;
+}
+
+.controls {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+/* Styles for HandResults component */
+.results-container {
+  width: 100%; max-width: 600px; margin: 15px auto; padding: 15px;
+  background-color: #fff; border: 1px solid #ddd;
+  border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.results-container h2 {
+    margin-bottom: 15px;
+}
+
+.score-summary { margin-bottom: 20px; }
+
+.score-circle {
+  width: 110px; height: 110px;
+  border-radius: 50%; background-color: #e0e0e0;
+  display: flex; align-items: center; justify-content: center;
+  margin: 0 auto 10px auto; font-size: 1.8em;
+  font-weight: bold; color: #333;
+}
+
+.metrics-grid {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto 20px auto;
+}
+
+.metric {
+  text-align: center;
+  padding: 5px 10px;
+}
+
+.metric h3 { font-size: 0.9em; color: #555; margin-bottom: 3px; }
+.metric .metric-value { font-size: 1.6em; font-weight: bold; color: #333; }
+
+.reaction-times-container { margin-bottom: 20px; }
+.reaction-times-container h3 { font-size: 1.05em; margin-bottom: 10px;}
+
+.analysis-box {
+  background-color: #f9f9f9; padding: 12px;
+  border-radius: 5px; text-align: left;
+  margin-bottom: 20px; border: 1px solid #eee;
+}
+.analysis-box h3 { margin-top: 0; font-size: 1em; }
+.analysis-box p { font-size: 0.9em; line-height: 1.45; }
+.analysis-box .analysis-detail { font-size: 0.85em; color: #666; }
+
+.submit-button {
+  padding: 11px 22px; font-size: 1em;
+  background-color: #4CAF50; color: white;
+  border: none; border-radius: 5px; cursor: pointer;
+  margin-top: auto;
+}
+.submit-button:hover { background-color: #45a049; }
+
+.reaction-times-chart {
+  display: flex; align-items: flex-end; justify-content: space-around;
+  padding: 0 5px; border-bottom: 1px solid #ccc;
+  margin-bottom: 25px;
+  height: 130px;
+}
+
+.chart-column {
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center; flex: 1; max-width: 38px;
+}
+
+.reaction-time-bar {
+  position: relative; border-radius: 3px 3px 0 0;
+  transition: height 0.3s ease-out; cursor: default; margin: 0 auto;
+}
+
+.reaction-time-label {
+  position: absolute; top: -18px;
+  left: 50%; transform: translateX(-50%);
+  width: auto; min-width: 28px; text-align: center;
+  font-size: 9px; color: #333; font-weight: bold; white-space: nowrap;
+}
+
+.chart-column .test-label-bottom {
+  margin-top: 5px; font-size: 10px; color: #6c757d;
+}
+
+/* --- Styles for Results Page Metrics Grid --- */
+
+.results-container .metrics-grid {
+  display: flex;
+  flex-direction: row; /* Ensures items are in a row */
+  justify-content: space-around; /* Distributes space around the items */
+  align-items: stretch; /* Makes metric boxes of equal height if they have borders/backgrounds */
+  gap: 10px; /* Adds a small space between the two metric boxes */
+  margin-top: 15px; /* Space above this section */
+  margin-bottom: 25px; /* Space below this section */
+  width: 100%; /* Ensures the grid takes the full available width */
+}
+
+.results-container .metric {
+  flex-grow: 1; /* Allows each metric box to grow and share space */
+  flex-basis: 0; /* Works with flex-grow to distribute space effectively */
+  padding: 12px 10px; /* Padding inside each metric box */
+  border: 1px solid #e0e0e0; /* Light border for each box */
+  border-radius: 8px; /* Rounded corners for the boxes */
+  background-color: #f7f7f7; /* Slight background color for distinction */
+  text-align: center; /* Center the text content */
+  box-sizing: border-box; /* Includes padding and border in the element's total width and height */
+  display: flex; /* Use flexbox for internal alignment too */
+  flex-direction: column; /* Stack h3 and metric-value vertically */
+  justify-content: center; /* Center content vertically within the box */
+}
+
+.results-container .metric h3 {
+  margin-top: 0;
+  margin-bottom: 5px; /* Space between title and value */
+  font-size: 0.85em; /* Slightly smaller font for the title on mobile */
+  color: #444; /* Dark grey for title */
+  font-weight: 600;
+}
+
+.results-container .metric .metric-value {
+  font-size: 1.5em; /* Larger font for the actual time value */
+  font-weight: bold;
+  color: #007bff; /* A distinct color for the value */
+}
+
+/* Optional: Adjustments for very small screens if needed,
+   though flex-grow should handle responsiveness well.
+   If text still feels too large on extremely narrow devices,
+   you could further reduce font sizes here. */
+@media (max-width: 360px) {
+  .results-container .metric h3 {
+    font-size: 0.75em;
+  }
+  .results-container .metric .metric-value {
+    font-size: 1.3em;
+  }
+  .results-container .metrics-grid {
+    gap: 8px; /* Slightly reduce gap */
+  }
+  .results-container .metric {
+    padding: 10px 8px;
+  }
+}
+
+.results-container .analysis-box p {
+  text-align: left;
+  line-height: 1.6; /* Adjust for readability */
+  font-size: 0.9em; /* Or your preferred size */
+  white-space: pre-line; /* Ensures \n characters create new lines */
+  color: #333; /* Or your preferred text color */
+}
+
+/* ... (keep all existing CSS) ... */
+
+/* --- Visual Scales --- */
+.visual-scales-section {
+  margin-top: 25px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px; /* Space between the two scales */
+}
+
+.performance-scale-container {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+}
+
+.performance-scale-container h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 1.1em; /* Slightly larger title for scale */
+  color: #333;
+  text-align: left;
+  font-weight: 600;
+}
+
+.scale-bar-wrapper {
+  position: relative; /* Essential for absolute positioning of children */
+  width: 100%;
+  padding-top: 25px; /* Space for the pointer above the bar. Adjust if needed. */
+  margin-bottom: 25px; /* Space for threshold labels below */
+}
+
+.scale-bar {
+  display: flex;
+  width: 100%;
+  height: 22px; /* Slightly thicker bar */
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #b0b0b0; /* Darker border for bar */
+}
+
+.scale-segment {
+  height: 100%;
+  /* transition for potential future dynamic updates, not strictly needed now */
+  /* transition: width 0.3s ease-in-out; */
+}
+
+.scale-thresholds {
+  position: relative; /* Changed from absolute for simpler flow */
+  width: 100%;
+  height: 20px; 
+  margin-top: 8px; /* Space above labels */
+  display: flex; /* Use flex to position min/max labels */
+  justify-content: space-between; /* Pushes min/max to edges */
+}
+
+.scale-threshold-label {
+  position: absolute; /* Keep these absolute for precise positioning over ticks */
+  bottom: -2px; /* Align with the bottom of .scale-thresholds container */
+  transform: translateX(-50%); 
+  font-size: 0.7em;
+  color: #444;
+  white-space: nowrap;
+  background-color: rgba(249, 249, 249, 0.8); /* Ensure readability over bar chart if it extends */
+  padding: 0 2px;
+}
+.scale-thresholds > span:first-child { /* Min label */
+    position: static; /* Override absolute for flex positioning */
+    transform: none;
+}
+.scale-thresholds > span:last-child { /* Max label */
+    position: static; /* Override absolute for flex positioning */
+    transform: none;
+}
+
+
+.scale-threshold-label::before {
+  content: '|';
+  position: absolute;
+  top: -10px; 
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9em;
+  color: #999;
+}
+/* Remove ::before for the edge (min/max) labels if they are part of the flex layout */
+.scale-thresholds > span:first-child::before,
+.scale-thresholds > span:last-child::before {
+    display: none;
+}
+
+
+/* Adjust metrics grid if StdDev is added there */
+.results-container .metrics-grid {
+  /* ... existing styles ... */
+  /* If you have 3 items, you might want them to wrap on small screens or adjust basis */
+}
+
+@media (max-width: 480px) {
+  .results-container .metrics-grid {
+    flex-wrap: wrap; /* Allow metrics to wrap if too many */
+  }
+  .results-container .metric {
+    flex-basis: calc(50% - 10px); /* Two items per row on small screens */
+    margin-bottom: 10px;
+  }
+   .results-container .metric:last-child { /* If odd number, last one takes full width */
+    flex-basis: 100%;
+  }
+  .performance-scale-container h4 {
+    font-size: 1em;
+  }
+  .scale-threshold-label {
+    font-size: 0.65em;
+  }
+}
+
+/* ... (keep all existing CSS from before, including other scale styles) ... */
+
+.scale-bar {
+  display: flex;
+  width: 100%;
+  height: 22px; 
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid #b0b0b0; 
+  /* No change here, just showing context */
+}
+
+.scale-thresholds {
+  position: relative; 
+  width: 100%;
+  height: 20px; 
+  /* This margin is now from the bottom of the scale-bar, not the pointer */
+  margin-top: 8px; 
+  display: flex; 
+  justify-content: space-between; 
+}
+
+/* ... (keep all existing CSS, including the updated .scale-pointer and .scale-bar-wrapper) ... */
+
+.scale-analysis-comment {
+  font-size: 0.9em;
+  color: #333;
+  margin-top: 8px; /* Space above the comment */
+  margin-bottom: 0; /* Reset bottom margin if any */
+  text-align: left;
+  padding-left: 5px; /* Slight indent */
+  font-style: italic; /* Optional: make it italic */
+}
+
+.analysis-box h3 { /* Title for the main analysis box */
+  margin-bottom: 10px; /* Ensure space before the paragraph */
+}
+
+/* ... (keep all existing CSS) ... */
+
+/* Ensure .scale-bar-wrapper has padding for the pointer */
+.scale-bar-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 25px; /* Space for the pointer above the bar */
+  margin-bottom: 25px; 
+}
+
+/* Ensure .scale-pointer CSS includes rotation */
+.scale-pointer {
+  position: absolute;
+  top: 0px; 
+  font-size: 1.6em; 
+  color: #337ab7; 
+  transform-origin: center center; /* Rotate around the character's center */
+  line-height: 1;
+  z-index: 2;
+  transition: left 0.3s ease-out;
+}
+
+/* Style for the new overall score comment */
+.score-summary {
+  text-align: center; /* Ensure score circle and text are centered */
+  margin-bottom: 20px; /* Existing or adjusted margin */
+}
+
+.score-overall-comment {
+  font-size: 1.05em; /* Slightly larger for emphasis */
+  color: #333;
+  margin-top: 12px; 
+  margin-bottom: 20px; /* Space before the visual scales section */
+  font-weight: 500; 
+  line-height: 1.5;
+}
+
+.scale-analysis-comment {
+  font-size: 0.9em;
+  color: #333;
+  margin-top: 8px; 
+  margin-bottom: 0; 
+  text-align: left;
+  padding-left: 5px; 
+  font-style: italic; 
+}
+
+/* ... (rest of your CSS) ... */
