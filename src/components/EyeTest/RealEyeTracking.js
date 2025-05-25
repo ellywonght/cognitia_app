@@ -288,9 +288,9 @@ export default function RealEyeTracking({ setCurrentTest }) {
         console.log(`[DEBUG] (${mountAttemptIdentifier}) Configuring WebGazer parameters.`);
         if (!wg.params) throw new Error("WebGazer instance is missing 'params' object.");
         
-        wg.params.showVideoPreview = true;  // changed to true to activate tracking 
+        wg.params.showVideoPreview = false; 
         wg.params.showFaceOverlay = false;
-        wg.params.showPredictionPoints = true;  // changed to true to show red prediction dot 
+        wg.params.showPredictionPoints = false; 
         wg.params.showVideo = false; 
         wg.params.smoothing = true;
         
