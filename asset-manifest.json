@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/cognitia_app/static/css/main.3a688f94.css",
-    "main.js": "/cognitia_app/static/js/main.64e09101.js",
+    "main.js": "/cognitia_app/static/js/main.bcebdbe4.js",
     "static/js/845.f1233a89.chunk.js": "/cognitia_app/static/js/845.f1233a89.chunk.js",
     "index.html": "/cognitia_app/index.html",
     "main.3a688f94.css.map": "/cognitia_app/static/css/main.3a688f94.css.map",
-    "main.64e09101.js.map": "/cognitia_app/static/js/main.64e09101.js.map",
+    "main.bcebdbe4.js.map": "/cognitia_app/static/js/main.bcebdbe4.js.map",
     "845.f1233a89.chunk.js.map": "/cognitia_app/static/js/845.f1233a89.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.3a688f94.css",
-    "static/js/main.64e09101.js"
+    "static/js/main.bcebdbe4.js"
   ]
 }
