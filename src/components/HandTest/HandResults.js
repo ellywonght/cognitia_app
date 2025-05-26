@@ -1,6 +1,11 @@
-import React from 'react';
-// CSS is in HandReaction.css (make sure the .scale-pointer CSS is updated for rotation)
+// /src/components/HandTest/HandResults.js
 
+import React from 'react';
+// Import constants, including the updated SCALE_COLORS
+import { REACTION_TIME_THRESHOLDS, STD_DEV_THRESHOLDS, SCALE_COLORS } from './constants';
+// CSS is in HandReaction.css
+
+// calculatePointerPosition function remains the same...
 const calculatePointerPosition = (actualValue, minValOnScale, maxValOnScale) => {
   if (actualValue <= minValOnScale) return 0;
   if (actualValue >= maxValOnScale) return 100;
@@ -8,6 +13,7 @@ const calculatePointerPosition = (actualValue, minValOnScale, maxValOnScale) => 
   return ((actualValue - minValOnScale) / (maxValOnScale - minValOnScale)) * 100;
 };
 
+// PerformanceScale function remains the same...
 function PerformanceScale({ title, value, unit, scaleParams, pointerPos, analysisComment }) {
   return (
     <div className="performance-scale-container">
@@ -38,15 +44,15 @@ function PerformanceScale({ title, value, unit, scaleParams, pointerPos, analysi
             ) : null;
           })}
         </div>
-        <div 
-          className="scale-pointer" 
+        <div
+          className="scale-pointer"
           style={{ left: `${pointerPos}%` }}
-        >▼</div> {/* This character will be rotated by CSS to point upwards */}
+        >▼</div>
         <div className="scale-thresholds">
           <span className="scale-threshold-label" style={{ left: `0%` }}>{scaleParams.min}</span>
           {scaleParams.thresholds.map(thr => {
             const pos = calculatePointerPosition(thr, scaleParams.min, scaleParams.max);
-            if (pos > 5 && pos < 95) { 
+            if (pos > 5 && pos < 95) {
               return <span key={thr} className="scale-threshold-label" style={{ left: `${pos}%` }}>{thr}</span>;
             }
             return null;
@@ -61,6 +67,7 @@ function PerformanceScale({ title, value, unit, scaleParams, pointerPos, analysi
   );
 }
 
+
 function HandResults({ results, onReset }) {
   const times = results.times || [];
   const maxBarHeight = 130;
@@ -69,25 +76,40 @@ function HandResults({ results, onReset }) {
 
   const averageTime = results.averageTime;
   const stdDev = results.stdDev;
-  const analysisTexts = results.analysisTexts || {}; 
+  const analysisTexts = results.analysisTexts || {};
 
+  // Use the new SCALE_COLORS.ORANGE for the "Normal" category
   const avgTimeScaleParams = {
-    min: 150, max: 850, 
+    min: 150, // Or your adjusted PERFECT_REACTION_TIME for older adults
+    max: REACTION_TIME_THRESHOLDS.NORMAL + 200, // Adjust as needed
     segments: [
-      { limit: 350, color: '#5cb85c', label: '非常迅速' }, { limit: 550, color: '#f0ad4e', label: '良好' },
-      { limit: 750, color: '#d9534f', label: '正常範圍' }, { limit: Infinity, color: '#c9302c', label: '相對偏慢' }
+      { limit: REACTION_TIME_THRESHOLDS.VERY_FAST, color: SCALE_COLORS.GREEN, label: '非常迅速' },
+      { limit: REACTION_TIME_THRESHOLDS.GOOD, color: SCALE_COLORS.YELLOW, label: '良好' },
+      { limit: REACTION_TIME_THRESHOLDS.NORMAL, color: SCALE_COLORS.ORANGE, label: '正常範圍' }, // Using new ORANGE
+      { limit: Infinity, color: SCALE_COLORS.RED, label: '相對偏慢' }
     ],
-    thresholds: [350, 550, 750]
+    thresholds: [
+        REACTION_TIME_THRESHOLDS.VERY_FAST,
+        REACTION_TIME_THRESHOLDS.GOOD,
+        REACTION_TIME_THRESHOLDS.NORMAL
+    ]
   };
   const avgTimePointerPos = calculatePointerPosition(averageTime, avgTimeScaleParams.min, avgTimeScaleParams.max);
 
   const stdDevScaleParams = {
-    min: 0, max: 250, 
+    min: 0,
+    max: STD_DEV_THRESHOLDS.SLIGHT_FLUCTUATION + 70, // Adjust as needed
     segments: [
-      { limit: 100, color: '#5cb85c', label: '相對一致' }, { limit: 180, color: '#f0ad4e', label: '略有波動' },
-      { limit: Infinity, color: '#d9534f', label: '波動較大' }
+      { limit: STD_DEV_THRESHOLDS.CONSISTENT, color: SCALE_COLORS.GREEN, label: '相對一致' },
+      { limit: STD_DEV_THRESHOLDS.SLIGHT_FLUCTUATION, color: SCALE_COLORS.YELLOW, label: '略有波動' },
+      { limit: Infinity, color: SCALE_COLORS.ORANGE, label: '波動較大' } // Using ORANGE for "Larger Fluctuation"
+                                                                      // If "Larger Fluctuation" is very bad, consider RED.
+                                                                      // For now, ORANGE makes it less alarming than RED.
     ],
-    thresholds: [100, 180]
+    thresholds: [
+        STD_DEV_THRESHOLDS.CONSISTENT,
+        STD_DEV_THRESHOLDS.SLIGHT_FLUCTUATION
+    ]
   };
   const stdDevPointerPos = calculatePointerPosition(stdDev, stdDevScaleParams.min, stdDevScaleParams.max);
 
@@ -97,24 +119,27 @@ function HandResults({ results, onReset }) {
       <div className="score-summary">
         <div className="score-circle"><span>{results.score}%</span></div>
         <p>綜合表現評分</p>
-        {/* NEW: Display the score comment */}
         {analysisTexts.scoreComment && (
           <p className="score-overall-comment">{analysisTexts.scoreComment}</p>
         )}
       </div>
 
-      {/* Metrics grid removed */}
-
       <div className="visual-scales-section">
-        <PerformanceScale 
-          title="平均反應時間" value={averageTime} unit="ms" 
-          scaleParams={avgTimeScaleParams} pointerPos={avgTimePointerPos}
-          analysisComment={analysisTexts.avgTimeComment} 
+        <PerformanceScale
+          title="平均反應時間"
+          value={averageTime}
+          unit="ms"
+          scaleParams={avgTimeScaleParams}
+          pointerPos={avgTimePointerPos}
+          analysisComment={analysisTexts.avgTimeComment}
         />
-        <PerformanceScale 
-          title="反應時間變異 (標準差)" value={stdDev} unit="ms" 
-          scaleParams={stdDevScaleParams} pointerPos={stdDevPointerPos}
-          analysisComment={analysisTexts.variabilityComment} 
+        <PerformanceScale
+          title="反應時間變異 (標準差)"
+          value={stdDev}
+          unit="ms"
+          scaleParams={stdDevScaleParams}
+          pointerPos={stdDevPointerPos}
+          analysisComment={analysisTexts.variabilityComment}
         />
       </div>
 
@@ -123,9 +148,28 @@ function HandResults({ results, onReset }) {
         <div className="reaction-times-chart" style={{ height: `${maxBarHeight + 30}px` }}>
           {times.map((time, index) => {
             const barHeight = Math.max(minBarHeight, maxTimeForChart > 0 ? (time / maxTimeForChart) * maxBarHeight : minBarHeight);
+
+            let barColor;
+            if (time < REACTION_TIME_THRESHOLDS.VERY_FAST) {
+              barColor = SCALE_COLORS.GREEN;
+            } else if (time < REACTION_TIME_THRESHOLDS.GOOD) {
+              barColor = SCALE_COLORS.YELLOW;
+            } else if (time < REACTION_TIME_THRESHOLDS.NORMAL) {
+              barColor = SCALE_COLORS.ORANGE; // Using new ORANGE for "Normal" times
+            } else {
+              barColor = SCALE_COLORS.RED;    // RED for times slower than "Normal"
+            }
+
             return (
               <div key={index} className="chart-column">
-                <div className="reaction-time-bar" title={`${time}ms`} style={{ width: '100%', height: `${barHeight}px`, backgroundColor: time < 350 ? '#5cb85c' : time < 550 ? '#f0ad4e' : time < 750 ? '#d9534f' : '#c9302c' }}>
+                <div
+                    className="reaction-time-bar"
+                    title={`${time}ms`}
+                    style={{
+                        width: '100%',
+                        height: `${barHeight}px`,
+                        backgroundColor: barColor
+                    }}>
                   <span className="reaction-time-label">{time}ms</span>
                 </div>
                 <div className="test-label-bottom">測試 {index + 1}</div>
